@@ -30,7 +30,7 @@ jobs:
       - name: Setup heroku database name env
         run: heroku config:set DB_NAME=${{secrets.DB_NAME}}
       - name: push heroku to master
-        run:
+        run: |
           git fetch --unshallow origin
           git push heroku master
 
