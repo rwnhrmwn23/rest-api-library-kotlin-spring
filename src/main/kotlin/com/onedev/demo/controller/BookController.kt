@@ -1,6 +1,7 @@
 package com.onedev.demo.controller
 
 import com.onedev.demo.entity.Book
+import com.onedev.demo.entity.User
 import com.onedev.demo.response.BaseResponse
 import com.onedev.demo.service.BookService
 import org.springframework.beans.factory.annotation.Autowired
@@ -12,6 +13,37 @@ class BookController {
 
     @Autowired
     private lateinit var bookService: BookService
+
+    @GetMapping("/login")
+    fun login(
+        @RequestBody user: User
+    ): BaseResponse<User> {
+        val data = bookService.login(user)
+        return if (data != null) {
+            BaseResponse(
+                message = "Login Success",
+                status = true,
+                data = bookService.login(user)
+            )
+        } else {
+            BaseResponse(
+                message = "Login Failed - Incorrect Email or Password",
+                status = false,
+                data = null
+            )
+        }
+    }
+
+    @PostMapping("/register")
+    fun register(
+        @RequestBody user: User
+    ): BaseResponse<User> {
+        return BaseResponse(
+            message = "Register Success",
+            status = true,
+            data = bookService.register(user)
+        )
+    }
 
     @GetMapping
     fun getBooks(): BaseResponse<List<Book>> {

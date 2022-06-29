@@ -1,6 +1,7 @@
 package com.onedev.demo.service
 
 import com.onedev.demo.entity.Book
+import com.onedev.demo.entity.User
 import com.onedev.demo.repository.BookRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -10,6 +11,14 @@ class BookServiceImpl : BookService {
 
     @Autowired
     private lateinit var bookRepository: BookRepository
+
+    override fun login(user: User): User? {
+        return bookRepository.login(user.email, user.password)
+    }
+
+    override fun register(user: User): User? {
+        return bookRepository.register(user.name, user.email, user.password)
+    }
 
     override fun getBooks(): List<Book> {
         return bookRepository.getBooks()
@@ -24,11 +33,11 @@ class BookServiceImpl : BookService {
     }
 
     override fun addBook(book: Book): List<Book> {
-        return bookRepository.addBook(book.title, book.author, book.userId)
+        return bookRepository.addBook(book.title, book.author, book.linkImage, book.userId)
     }
 
     override fun updateBook(id: String, book: Book): Book? {
-        return bookRepository.updateBook(id, book.title, book.author)
+        return bookRepository.updateBook(id, book.title, book.author, book.linkImage)
     }
 
     override fun deleteBook(id: String): Book? {
