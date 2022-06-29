@@ -13,8 +13,24 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '11'
-      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
-        with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "rest-api-library-kotlin-spring"
-          heroku_email: "rwnhermawan@gmail.com"
+      - name: Create heroku config gile
+        run: |
+          cat >~/.netrc <<EOF
+          machine api.heroku.com
+              login ${{secrets.HEROKU_EMAIL}}
+              password ${{secrets.HEROKU_API_KEY}}
+          machine git.heroku.com
+              login ${{secrets.HEROKU_EMAIL}}
+              password ${{secrets.HEROKU_API_KEY}}
+          EOF
+      - name: Add heroku remote
+        run: heroku git:remote --app=${{secrets.HEROKU_APP_NAME}}
+      - name: Setup heroku database url env
+        run: heroku config:set DATABASE_URL=${{secrets.DATABASE_URL}}
+      - name: Setup heroku database name env
+        run: heroku config:set DATABASE_URL=${{secrets.DB_NAME}}
+      - name: push heroku to master
+        run:
+          git fetch --unshallow origin
+          git push heroku master
+

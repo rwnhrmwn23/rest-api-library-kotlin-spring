@@ -17,7 +17,7 @@ class BookRepositoryImpl: BookRepository {
     @Autowired
     private lateinit var databaseComponent: DatabaseComponent
 
-    private val dbURL = System.getenv("DB_URL")
+    private val dbURL = System.getenv("DB_NAME")
     private fun bookCollection(): MongoCollection<Book> =
         databaseComponent.database.getDatabase(dbURL).getCollection()
 
