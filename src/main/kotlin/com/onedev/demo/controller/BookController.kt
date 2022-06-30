@@ -14,7 +14,7 @@ class BookController {
     @Autowired
     private lateinit var bookService: BookService
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     fun login(
         @RequestBody user: User
     ): BaseResponse<User> {
